@@ -34,3 +34,37 @@ ggplot(data = movies_2000s) +
 ggtitle("Revenue vs Budget for 2000s Movies")
 ```
 A general trend that we see is that movies produced generate a revnenue that is similarly around their budget expenditure. 
+
+---
+title: "Arne Exercise2"
+output: html_notebook
+Introduction - same as exercise 1
+```{r}
+#Load Data
+library(tidyverse)
+movies <- read_csv('movies.csv')
+```
+Here I filter only the movies from the 2000s that budget and revenue > 0.  
+```{r}
+movies_2000s <- movies %>%
+  filter(decade=='2000s') %>%
+  filter(budget > 0) %>%
+  filter(revenue > 0)
+```
+Here I group movies by their average rating whether > 7 or <= 7. 
+```{r}
+movies_2000sratings <- movies_2000s %>%
+mutate(
+  movie_ratingover7 = ifelse(vote_average > 7, "over 7", "lower than 7")
+  )
+```
+
+```{r}
+ggplot(data = movies_2000sratings) +
+  geom_point(mapping = aes(x = budget, y = revenue, color = movie_ratingover7))+
+  xlab("budget ($)")+
+  ylab("revenue ($)") +
+ggtitle("Revenue vs Budget for 2000s Movies")
+```
+It looks like there is a greater amount of movies with ratings lower than 7 than over 7. 
+Movies with ratings lower than 7 in general, seem to also have lower budgets than their counterpart. 
